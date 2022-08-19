@@ -25,15 +25,26 @@ function onItemsGalleryItemClick(event) {
     event.preventDefault();
     if (event.target.classList.contains("gallery")) return;
     const source = event.target.dataset.source;
-    const instance = basicLightbox.create(`<img src="${source}">`);
+    const instance = basicLightbox.create(`<img src="${source}">`, {
+        closable: true,
+  
+        className: '',
+    
+        onShow: (instance) => {
+            
+            document.addEventListener('keydown', keyPress)
+        },
+   
+        onClose: (instance) => {
+            document.removeEventListener('keydown', keyPress);
+        }
+    });
     instance.show();
-    if (instance.show() === true) {
-        document.addEventListener('keydown', keyPress)
+ 
         function keyPress(event) {
             if (event.key === "Escape") {
                 instance.close();
-                document.removeEventListener('keydown', keyPress);
             }
         }
-    }
+ 
 }
